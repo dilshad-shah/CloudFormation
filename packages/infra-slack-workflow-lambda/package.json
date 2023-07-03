@@ -1,0 +1,31 @@
+{
+  "name": "@cvent/infra-slack-workflow-lambda",
+  "version": "0.11.0",
+  "license": "UNLICENSED",
+  "main": "dist/index.py",
+  "scripts": {
+    "prepare": "poetry install",
+    "build": "poetry-cvent build:lambda",
+    "fix:black": "poetry run black .",
+    "fix:isort": "poetry run isort .",
+    "fix:prettier": "prettier-cvent fix",
+    "fix": "run-s fix:*",
+    "lint:prettier": "prettier-cvent lint",
+    "lint:black": "poetry run black --check --diff .",
+    "lint:isort": "poetry run isort --check --diff .",
+    "lint:pyright": "pyright src",
+    "lint:mypy": "poetry run mypy src",
+    "lint:pylint": "poetry run pylint src",
+    "lint": "run-s -ls lint:*",
+    "test": "poetry run pytest",
+    "update": "poetry run poetryup",
+    "update:latest": "poetry run poetryup --latest"
+  },
+  "devDependencies": {
+    "@cvent/builder-poetry": "^1.0.8",
+    "@cvent/builder-prettier": "^1.1.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.3.2",
+    "pyright": "^1.1.237"
+  }
+}

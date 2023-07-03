@@ -1,0 +1,843 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`application with defaults 1`] = `
+Object {
+  "Outputs": Object {
+    "LoadBalancerDNS": Object {
+      "Value": Object {
+        "Ref": "infraslackworkflowapiDomainDnsRecordCFDC8FA1",
+      },
+    },
+    "infraslackworkflowapiEndpoint05FBE7B7": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "infraslackworkflowapiB910C56A",
+            },
+            ".execute-api.us-east-1.",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "infraslackworkflowapiDeploymentStageprodD67E1A6B",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecArtifactHashF1D0A81E": Object {
+      "Description": "Artifact hash for asset \\"933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ec\\"",
+      "Type": "String",
+    },
+    "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3BucketB74DFC99": Object {
+      "Description": "S3 bucket for asset \\"933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ec\\"",
+      "Type": "String",
+    },
+    "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3VersionKeyCAADF052": Object {
+      "Description": "S3 key for asset version \\"933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ec\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "InfraSlackWorkflowLambda833DA3E4": Object {
+      "DependsOn": Array [
+        "InfraSlackWorkflowLambdaServiceRoleDefaultPolicy94F58139",
+        "InfraSlackWorkflowLambdaServiceRole75DBBB72",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3BucketB74DFC99",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3VersionKeyCAADF052",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3VersionKeyCAADF052",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {},
+        },
+        "Handler": "index.handler",
+        "MemorySize": 3008,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "InfraSlackWorkflowLambdaServiceRole75DBBB72",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.9",
+        "Timeout": 300,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "InfraSlackWorkflowLambdaEventInvokeConfigD2210958": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "InfraSlackWorkflowLambda833DA3E4",
+        },
+        "MaximumRetryAttempts": 0,
+        "Qualifier": "$LATEST",
+      },
+      "Type": "AWS::Lambda::EventInvokeConfig",
+    },
+    "InfraSlackWorkflowLambdaServiceRole75DBBB72": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "InfraSlackWorkflowLambdaServiceRoleDefaultPolicy94F58139": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ssm:GetParameter",
+                "ssm:GetParameters",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                "arn:aws:ssm:us-east-1:572724207364:parameterundefined",
+              ],
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "infra-slack-workflow-dynamodb:ExportsOutputFnGetAttinfraslackworkflowdynamodbCB872367Arn36B4C1E3",
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "InfraSlackWorkflowLambdaServiceRoleDefaultPolicy94F58139",
+        "Roles": Array [
+          Object {
+            "Ref": "InfraSlackWorkflowLambdaServiceRole75DBBB72",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "infraslackworkflowapiB910C56A": Object {
+      "Properties": Object {
+        "Description": "API for the InfraWorkflow App",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "Name": "infra-slack-workflow-api",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "infraslackworkflowapiDeployment97D3C2AFa0112814ea588aefd026eba378ffe5f2": Object {
+      "DependsOn": Array [
+        "infraslackworkflowapieventhandlerPOSTA78C202D",
+        "infraslackworkflowapieventhandler2B3DE92B",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "infraslackworkflowapiDeploymentStageprodD67E1A6B": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "infraslackworkflowapiDeployment97D3C2AFa0112814ea588aefd026eba378ffe5f2",
+        },
+        "MethodSettings": Array [
+          Object {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "MetricsEnabled": true,
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+        "StageName": "prod",
+        "TracingEnabled": true,
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "infraslackworkflowapiDomain1F140300": Object {
+      "Properties": Object {
+        "DomainName": "infraslackworkflowstack.cvent-sandbox.cvent.cloud",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "RegionalCertificateArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":acm:us-east-1:572724207364:certificate/56e71c9e-f5a0-47d7-9c10-a11c0fbbf502",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::DomainName",
+    },
+    "infraslackworkflowapiDomainDnsRecordCFDC8FA1": Object {
+      "Properties": Object {
+        "AliasTarget": Object {
+          "DNSName": Object {
+            "Fn::GetAtt": Array [
+              "infraslackworkflowapiDomain1F140300",
+              "RegionalDomainName",
+            ],
+          },
+          "HostedZoneId": Object {
+            "Fn::GetAtt": Array [
+              "infraslackworkflowapiDomain1F140300",
+              "RegionalHostedZoneId",
+            ],
+          },
+        },
+        "HostedZoneId": "Z321UXK1TZE4RD",
+        "Name": "infraslackworkflowstack.cvent-sandbox.cvent.cloud.",
+        "Type": "A",
+      },
+      "Type": "AWS::Route53::RecordSet",
+    },
+    "infraslackworkflowapiDomainMapinfraslackworkflowinfraslackworkflowapi7A68E0753D68EF10": Object {
+      "Properties": Object {
+        "DomainName": Object {
+          "Ref": "infraslackworkflowapiDomain1F140300",
+        },
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+        "Stage": Object {
+          "Ref": "infraslackworkflowapiDeploymentStageprodD67E1A6B",
+        },
+      },
+      "Type": "AWS::ApiGateway::BasePathMapping",
+    },
+    "infraslackworkflowapieventhandler2B3DE92B": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "infraslackworkflowapiB910C56A",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "event-handler",
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "infraslackworkflowapieventhandlerPOSTA78C202D": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "InfraSlackWorkflowLambda833DA3E4",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "infraslackworkflowapieventhandler2B3DE92B",
+        },
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "infraslackworkflowapieventhandlerPOSTApiPermissionTestinfraslackworkflowinfraslackworkflowapi7A68E075POSTeventhandlerBE572958": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "InfraSlackWorkflowLambda833DA3E4",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:572724207364:",
+              Object {
+                "Ref": "infraslackworkflowapiB910C56A",
+              },
+              "/test-invoke-stage/POST/event-handler",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "infraslackworkflowapieventhandlerPOSTApiPermissioninfraslackworkflowinfraslackworkflowapi7A68E075POSTeventhandlerE37B4E61": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "InfraSlackWorkflowLambda833DA3E4",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:572724207364:",
+              Object {
+                "Ref": "infraslackworkflowapiB910C56A",
+              },
+              "/",
+              Object {
+                "Ref": "infraslackworkflowapiDeploymentStageprodD67E1A6B",
+              },
+              "/POST/event-handler",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+  },
+}
+`;
+
+exports[`application with version 1`] = `
+Object {
+  "Outputs": Object {
+    "LoadBalancerDNS": Object {
+      "Value": Object {
+        "Ref": "infraslackworkflowapiDomainDnsRecordCFDC8FA1",
+      },
+    },
+    "infraslackworkflowapiEndpoint05FBE7B7": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "infraslackworkflowapiB910C56A",
+            },
+            ".execute-api.us-east-1.",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "infraslackworkflowapiDeploymentStageprodD67E1A6B",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecArtifactHashF1D0A81E": Object {
+      "Description": "Artifact hash for asset \\"933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ec\\"",
+      "Type": "String",
+    },
+    "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3BucketB74DFC99": Object {
+      "Description": "S3 bucket for asset \\"933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ec\\"",
+      "Type": "String",
+    },
+    "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3VersionKeyCAADF052": Object {
+      "Description": "S3 key for asset version \\"933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ec\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "InfraSlackWorkflowLambda833DA3E4": Object {
+      "DependsOn": Array [
+        "InfraSlackWorkflowLambdaServiceRoleDefaultPolicy94F58139",
+        "InfraSlackWorkflowLambdaServiceRole75DBBB72",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3BucketB74DFC99",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3VersionKeyCAADF052",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters933c589f693365f6831c085f7c5bc7cff1eb0b04c5260dbb24c7bd48f9fb15ecS3VersionKeyCAADF052",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {},
+        },
+        "Handler": "index.handler",
+        "MemorySize": 3008,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "InfraSlackWorkflowLambdaServiceRole75DBBB72",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.9",
+        "Timeout": 300,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "InfraSlackWorkflowLambdaEventInvokeConfigD2210958": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "InfraSlackWorkflowLambda833DA3E4",
+        },
+        "MaximumRetryAttempts": 0,
+        "Qualifier": "$LATEST",
+      },
+      "Type": "AWS::Lambda::EventInvokeConfig",
+    },
+    "InfraSlackWorkflowLambdaServiceRole75DBBB72": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "InfraSlackWorkflowLambdaServiceRoleDefaultPolicy94F58139": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ssm:GetParameter",
+                "ssm:GetParameters",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                "arn:aws:ssm:us-east-1:572724207364:parameterundefined",
+              ],
+            },
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "infra-slack-workflow-dynamodb-version:ExportsOutputFnGetAttinfraslackworkflowdynamodbCB872367Arn36B4C1E3",
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "InfraSlackWorkflowLambdaServiceRoleDefaultPolicy94F58139",
+        "Roles": Array [
+          Object {
+            "Ref": "InfraSlackWorkflowLambdaServiceRole75DBBB72",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "infraslackworkflowapiB910C56A": Object {
+      "Properties": Object {
+        "Description": "API for the InfraWorkflow App",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "Name": "infra-slack-workflow-api",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "infraslackworkflowapiDeployment97D3C2AFa0112814ea588aefd026eba378ffe5f2": Object {
+      "DependsOn": Array [
+        "infraslackworkflowapieventhandlerPOSTA78C202D",
+        "infraslackworkflowapieventhandler2B3DE92B",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "infraslackworkflowapiDeploymentStageprodD67E1A6B": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "infraslackworkflowapiDeployment97D3C2AFa0112814ea588aefd026eba378ffe5f2",
+        },
+        "MethodSettings": Array [
+          Object {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "MetricsEnabled": true,
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+        "StageName": "prod",
+        "TracingEnabled": true,
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "infraslackworkflowapiDomain1F140300": Object {
+      "Properties": Object {
+        "DomainName": "infraslackworkflowstack.cvent-sandbox.cvent.cloud",
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "RegionalCertificateArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":acm:us-east-1:572724207364:certificate/56e71c9e-f5a0-47d7-9c10-a11c0fbbf502",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::DomainName",
+    },
+    "infraslackworkflowapiDomainDnsRecordCFDC8FA1": Object {
+      "Properties": Object {
+        "AliasTarget": Object {
+          "DNSName": Object {
+            "Fn::GetAtt": Array [
+              "infraslackworkflowapiDomain1F140300",
+              "RegionalDomainName",
+            ],
+          },
+          "HostedZoneId": Object {
+            "Fn::GetAtt": Array [
+              "infraslackworkflowapiDomain1F140300",
+              "RegionalHostedZoneId",
+            ],
+          },
+        },
+        "HostedZoneId": "Z321UXK1TZE4RD",
+        "Name": "infraslackworkflowstack.cvent-sandbox.cvent.cloud.",
+        "Type": "A",
+      },
+      "Type": "AWS::Route53::RecordSet",
+    },
+    "infraslackworkflowapiDomainMapinfraslackworkflowversioninfraslackworkflowapi95C389DA6FBDE55F": Object {
+      "Properties": Object {
+        "DomainName": Object {
+          "Ref": "infraslackworkflowapiDomain1F140300",
+        },
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+        "Stage": Object {
+          "Ref": "infraslackworkflowapiDeploymentStageprodD67E1A6B",
+        },
+      },
+      "Type": "AWS::ApiGateway::BasePathMapping",
+    },
+    "infraslackworkflowapieventhandler2B3DE92B": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "infraslackworkflowapiB910C56A",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "event-handler",
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "infraslackworkflowapieventhandlerPOSTA78C202D": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "InfraSlackWorkflowLambda833DA3E4",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "infraslackworkflowapieventhandler2B3DE92B",
+        },
+        "RestApiId": Object {
+          "Ref": "infraslackworkflowapiB910C56A",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "infraslackworkflowapieventhandlerPOSTApiPermissionTestinfraslackworkflowversioninfraslackworkflowapi95C389DAPOSTeventhandlerA08A17D3": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "InfraSlackWorkflowLambda833DA3E4",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:572724207364:",
+              Object {
+                "Ref": "infraslackworkflowapiB910C56A",
+              },
+              "/test-invoke-stage/POST/event-handler",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "infraslackworkflowapieventhandlerPOSTApiPermissioninfraslackworkflowversioninfraslackworkflowapi95C389DAPOSTeventhandlerEB0D153C": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "InfraSlackWorkflowLambda833DA3E4",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:us-east-1:572724207364:",
+              Object {
+                "Ref": "infraslackworkflowapiB910C56A",
+              },
+              "/",
+              Object {
+                "Ref": "infraslackworkflowapiDeploymentStageprodD67E1A6B",
+              },
+              "/POST/event-handler",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+  },
+}
+`;

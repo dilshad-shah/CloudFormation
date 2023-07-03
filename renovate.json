@@ -1,0 +1,19 @@
+{
+  "groupName": "all dependencies",
+  "separateMajorMinor": false,
+  "groupSlug": "all",
+  "packageRules": [
+    {
+      "allowedVersions": "/^[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?$/",
+      "packagePatterns": ["*"],
+      "schedule": "on the 3rd day of the month",
+      "groupName": "all dependencies",
+      "groupSlug": "all"
+    }
+  ],
+  "ignoreDeps": [],
+  "postUpgradeTasks": {
+    "commands": ["pnpm install", "./node_modules/.bin/changeset-cvent renovate '{{{commitMessage}}}'"],
+    "fileFilters": [".changeset/*.md", "pnpm-lock.yaml"]
+  }
+}
