@@ -22,3 +22,8 @@ def get_dynamodb_item(json_payload):
     """retrieves ticket_number for specific thread_ts provided"""
     db_client = boto3.client("dynamodb", region_name=os.environ.get("AWS_REGION"))
     return db_client.get_item(TableName=table_name, Key=json_payload)
+
+def delete_dynamodb_item(json_payload):
+    """retrieves ticket_number for specific thread_ts provided"""
+    db_client = boto3.client("dynamodb", region_name=os.environ.get("AWS_REGION"))
+    return db_client.delete_item(TableName=table_name, Key=json_payload)

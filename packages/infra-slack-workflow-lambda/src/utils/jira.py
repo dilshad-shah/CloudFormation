@@ -76,3 +76,22 @@ def create_jira_ticket(ticket_payload, channel, timestamp, user_id):
         log.error("Trouble creating Jira ticket : %s" % error)
         comment = f"> <@{user_id}>, I had trouble creating a ticket."
         return None
+
+def is_jira_ticket_closed(timestamp):
+    # get ticket for timestamp from dynamodb
+    try:
+        db_get_ticket_number = {"threadId": {"S": timestamp}}
+        ticket = get_dynamodb_item(db_get_ticket_number)
+        ticket = ticket["Item"]["ticketNumber"]["S"]
+    except KeyError as error:
+        log.error("No ticket found for this threadId : %s ; Message : %s" % (timestamp, error))
+        return True
+
+    url = f"https://jira.cvent.com/rest/api/2/issue/{ticket}?fields=status"
+
+    get_status = requests.get(url=url, headers=jira_headers)
+    log.info("ticket status: %s" % (get_status))
+    # TODO: after parsing the get response either return true or false if ticket is closed or not.
+    # status = json.loads(get_status.text)
+    # if status = "C" return True else False
+    return True

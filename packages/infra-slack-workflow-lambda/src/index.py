@@ -3,6 +3,7 @@ Lambda
 """
 import json
 import logging
+import time
 
 from aws_lambda_typing.events.api_gateway_proxy import (
     APIGatewayProxyEventV1,
@@ -15,7 +16,9 @@ from general_workflow import general_request
 from iam_workflow import iam_request
 
 # from pr_workflow import pr_request
-from utils.jira import upload_comment
+from utils.jira import upload_comment, is_jira_ticket_closed
+from utils.slack_calls import post_thread_message
+from utils.aws import delete_dynamodb_item
 
 log = logging.getLogger()
 log.setLevel("INFO")
@@ -79,7 +82,14 @@ def handler(
             user = slack_event["user"]
             timestamp = slack_event["thread_ts"]
             if user not in ["UPPTPNRAQ", "U04R0U7PL6A", "U0552GL91C7"]:
-                upload_comment(user_id=user, timestamp=timestamp, slack_event=slack_event)
+                now = time.time()
+                one_month_ago = now - 60*60*24*30
+                if timestamp < one_month_ago and is_jira_ticket_closed(timestamp) is True:
+                    log.info(f"TIMESTAMP : {timestamp} more than one month old")
+                    post_thread_message(channel, "The ticket was closed, For any additional comments please open a new ticket.", timestamp)
+                    # delete_dynamodb_item(timestamp)
+                else:
+                    upload_comment(user_id=user, timestamp=timestamp, slack_event=slack_event)
     else:
         pass
 
