@@ -66,7 +66,7 @@ def handler(
         if "subtype" in slack_event.keys() and slack_event["subtype"] == "bot_message":
             slack_event_text = slack_event["text"]
             slack_event_text = clean_input(slack_event_text)
-
+            log.info(f"slack_event_text : {slack_event_text}")
             if "*support request* submission from" in slack_event_text.lower():
                 general_request(slack_event_text, channel, timestamp)
             elif "*active directory request* submission from" in slack_event_text.lower():
@@ -84,7 +84,7 @@ def handler(
             if user not in ["UPPTPNRAQ", "U04R0U7PL6A", "U0552GL91C7"]:
                 now = time.time()
                 one_month_ago = now - 60*60*24*30
-                if timestamp < one_month_ago and is_jira_ticket_closed(timestamp) is True:
+                if float(timestamp) < one_month_ago and is_jira_ticket_closed(timestamp) is True:
                     log.info(f"TIMESTAMP : {timestamp} more than one month old")
                     post_thread_message(channel, "The ticket was closed, For any additional comments please open a new ticket.", timestamp)
                     # delete_dynamodb_item(timestamp)
