@@ -92,6 +92,7 @@ def is_jira_ticket_closed(timestamp):
     get_status = requests.get(url=url, headers=jira_headers)
     log.info("ticket status: %s" % (get_status))
     # TODO: after parsing the get response either return true or false if ticket is closed or not.
-    # status = json.loads(get_status.text)
+    status = json.loads(get_status)
+    log.info("status: %s" % (status))
     # if status = "C" return True else False
     return True
