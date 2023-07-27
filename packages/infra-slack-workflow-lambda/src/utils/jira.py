@@ -85,14 +85,13 @@ def is_jira_ticket_closed(timestamp):
         ticket = ticket["Item"]["ticketNumber"]["S"]
     except KeyError as error:
         log.error("No ticket found for this threadId : %s ; Message : %s" % (timestamp, error))
-        return True
+        return False
 
     url = f"https://jira.cvent.com/rest/api/2/issue/{ticket}?fields=status"
 
     get_status = requests.get(url=url, headers=jira_headers)
-    log.info("ticket status: %s" % (get_status))
-    # TODO: after parsing the get response either return true or false if ticket is closed or not.
+    # log.info("ticket status: %s" % (get_status))
     status = json.loads(get_status.text)
     log.info("status: %s" % (status))
-    # if status = "C" return True else False
-    return True
+
+    return status['fields']['status']['id'] =='10024'
