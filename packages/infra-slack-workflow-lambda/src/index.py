@@ -85,11 +85,15 @@ def handler(
                 now = time.time()
                 # one_month_ago = now - 60*60*24*30
                 one_month_ago = now - 30
+                one_week_ago = now - 60*60*24*7
                 log.info(f"TIMESTAMP : {timestamp} Now: {now} one_month_ago : {one_month_ago}")
                 if float(timestamp) < one_month_ago and is_jira_ticket_closed(timestamp) is True:
                     log.info(f"TIMESTAMP : {timestamp} more than one month old")
                     post_thread_message(channel, "The ticket was closed, For any additional comments please open a new ticket.", timestamp)
                     # delete_dynamodb_item(timestamp)
+                elif float(timestamp) < one_week_ago and is_jira_ticket_closed(timestamp) is True:
+                    log.info(f"TIMESTAMP : {timestamp} more than one month old")
+                    post_thread_message(channel, "The ticket was closed, For any additional comments please open a new ticket.", timestamp)
                 else:
                     upload_comment(user_id=user, timestamp=timestamp, slack_event=slack_event)
     else:
