@@ -68,5 +68,39 @@ export class InfraSlackWorkflowStack extends Stack {
     });
     const eventhandler = InfraSlackWorkflowApi.root.addResource('event-handler');
     eventhandler.addMethod('POST', new LambdaIntegration(InfraSlackWorkflowLambda));
+
+
+    const InfraSlackWorkflowCronLambda = new Function(this, 'InfraSlackWorkflowCronLambda', {
+      handler: 'index2.handler',
+      retryAttempts,
+      timeout,
+      memorySize,
+      runtime,
+      code: Code.fromAsset(path.dirname(require.resolve('@cvent/infra-slack-workflow-lambda'))),
+      environment: {
+        JIRA_TKN: props.lambdaEnvJira,
+        PD_TKN: props.lambdaEnvPd,
+        SLACK_TKN: props.lambdaEnvSlack,
+        DB_TABLE: props.lambdaEnvDBTable,
+        PD_SRV_ID: props.lambdaEnvPdSrvId
+      }
+    });
+    InfraSlackWorkflowCronLambda.addToRolePolicy(
+      new PolicyStatement({
+        actions: ['ssm:GetParameter', 'ssm:GetParameters'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter${props.lambdaEnvJira}`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter${props.lambdaEnvPd}`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter${props.lambdaEnvSlack}`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter${props.lambdaEnvPdSrvId}`
+        ]
+      })
+    );
+
+    const everyMonthRateER = new events.Rule(this, 'everyMonthRateER', {
+      schedule: events.Schedule.expression('rate(30 days)'),
+    });
+
+    everyMonthRateER.addTarget(new targets.LambdaFunction(InfraSlackWorkflowCronLambda));
   }
 }
